@@ -11,6 +11,7 @@ class MoviesController < ApplicationController
   end
 
   def index
+    
 
     @movies = Movie.all
     @all_ratings = []
@@ -21,9 +22,15 @@ class MoviesController < ApplicationController
       end
     end
     @all_ratings = @all_ratings.sort
+    if($prevChecked.nil? == true)
+      $prevChecked = @all_ratings
+    end
     
     @sortCol = params[:sort]
     @movies = Movie.order(@sortCol)
+    if(@sortCol.nil? == false)
+      $prevChecked = @all_ratings
+    end
     
     @checked = params[:ratings]
     if(@checked.nil? == false)
@@ -35,6 +42,7 @@ class MoviesController < ApplicationController
           @movies.push(m)
         end
       end
+      $prevChecked = @checked
     end
     
   end
