@@ -12,10 +12,9 @@ class MoviesController < ApplicationController
 
   def index
     
-
-    @movies = Movie.all
+    redNeed = false
     @all_ratings = []
-    for m in @movies do
+    for m in Movie.all do
       rating = m.rating
       if (@all_ratings.include?(rating) == false)
         @all_ratings.push(rating)
@@ -27,13 +26,31 @@ class MoviesController < ApplicationController
     end
     
     @sortCol = params[:sort]
-    @movies = Movie.order(@sortCol)
+   
     if(@sortCol.nil? == false)
       $prevChecked = @all_ratings
+      session[:current_sort] = @sortCol
+    else
+      @sortCol = session[:current_sort]
+      redNeed = true
     end
+    if(@sortCol.nil? == false)
+      @movies = Movie.order(@sortCol)
+    else
+      @movies = Movie.all
+    end
+    
     
     @checked = params[:ratings]
     if(@checked.nil? == false)
+      session[:current_checked] = @checked
+    else
+      @checked = session[:current_checked]
+      redNeed = true
+    end
+    
+    if(@checked.nil? == false)
+      $prevChecked = @checked
       @moviesSort = @movies
       @movies = []
       for m in @moviesSort do
@@ -42,8 +59,10 @@ class MoviesController < ApplicationController
           @movies.push(m)
         end
       end
-      $prevChecked = @checked
     end
+    
+    
+    
     
   end
 
