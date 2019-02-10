@@ -11,8 +11,32 @@ class MoviesController < ApplicationController
   end
 
   def index
+
+    @movies = Movie.all
+    @all_ratings = []
+    for m in @movies do
+      rating = m.rating
+      if (@all_ratings.include?(rating) == false)
+        @all_ratings.push(rating)
+      end
+    end
+    @all_ratings = @all_ratings.sort
+    
     @sortCol = params[:sort]
     @movies = Movie.order(@sortCol)
+    
+    @checked = params[:ratings]
+    if(@checked.nil? == false)
+      @moviesSort = @movies
+      @movies = []
+      for m in @moviesSort do
+        movieRating = m.rating
+        if(@checked.include?(movieRating) == true)
+          @movies.push(m)
+        end
+      end
+    end
+    
   end
 
   def new
