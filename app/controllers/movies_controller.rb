@@ -49,6 +49,13 @@ class MoviesController < ApplicationController
       redNeed = true
     end
     
+    if(redNeed == true)
+      if(flash[:notice])
+        flash.keep
+      end
+      redirect_to movies_path(:sort => @sortCol, :ratings => @checked)
+    end
+    
     if(@checked.nil? == false)
       $prevChecked = @checked
       @moviesSort = @movies
