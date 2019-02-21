@@ -30,7 +30,7 @@ class MoviesController < ApplicationController
     if(@sortCol.nil? == false)
       $prevChecked = @all_ratings
       session[:current_sort] = @sortCol
-     
+      
     else
       @sortCol = session[:current_sort]
       redNeed = true
@@ -51,7 +51,9 @@ class MoviesController < ApplicationController
       redNeed = true
     end
     
-    
+    if(redNeed == true)
+      redirect_to movies_path(:sort => @sortCol, :ratings => @checked)
+    end
     
     if(@checked.nil? == false)
       $prevChecked = @checked
