@@ -29,7 +29,6 @@ class MoviesController < ApplicationController
    
     if(@sortCol.nil? == false)
       $prevChecked = @all_ratings
-      session[:current_sort] = @sortCol
     elsif(session[:current_checked].nil? == false)
       @sortCol = session[:current_sort]
       redNeed = true
@@ -44,7 +43,7 @@ class MoviesController < ApplicationController
     @checked = params[:ratings]
     
     if(@checked.nil? == false)
-      session[:current_checked] = @checked
+      
     elsif(session[:current_checked].nil? == false)
       @checked = session[:current_checked]
       redNeed = true
@@ -69,8 +68,8 @@ class MoviesController < ApplicationController
       end
     end
     
-    
-    
+    session[:current_checked] = @checked
+    session[:current_sort] = @sortCol
     
   end
 
